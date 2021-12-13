@@ -216,4 +216,4 @@ def main():
     print("\n    ---type5---\n")
     type5()
 
-type5()
+main()
