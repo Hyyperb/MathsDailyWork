@@ -166,27 +166,27 @@ def type5(f=2,t=9):
     else:
         redden=""
         rednum=""
-        num = x*z+y*o
+        num = x*o+y*z
         den = z*o
         factor=hcf(num,den)
         if factor>1:
             rednum=" "+str(int(num/factor))
             redden=" "+str(int(den/factor))
 
-        print("{a}   {b}   {a}x{d}+{c}x{b}   {sr1} + {sr2}   {r1}".format(a=x,b=y,c=z,d=o,sr1=left(x*z,2),sr2=right(y*o,2),r1=num),right(rednum,5))
+        print("{a}   {b}   {a}x{d}+{c}x{b}   {sr1} + {sr2}   {r1}".format(a=x,b=y,c=z,d=o,sr1=left(x*o,2),sr2=right(y*z,2),r1=num),right(rednum,5))
         print("- + - = ------- = ------- = ---","= --    f({})".format(factor) if factor>1 else "")
         print("{c}   {d}    {c} x {d}       {r2}     {r2}".format(c=z,d=o,r2=left(den,2)),right(redden,5))
 
         print("\n")
 
-        num = x*z-y*o
+        num = x*o-y*z
         den = z*o
         factor=hcf(num,den)
         if factor>1:        
             rednum=str(int(num/factor))
             redden=str(int(den/factor))
 
-        print("{a}   {b}   {a}x{d}+{c}x{b}   {sr1} - {sr2}   {r1}".format(a=x,b=y,c=z,d=o,sr1=left(x*z,2),sr2=right(y*o,2),r1=x*z-y*o),right(rednum,5))
+        print("{a}   {b}   {a}x{d}+{c}x{b}   {sr1} - {sr2}   {r1}".format(a=x,b=y,c=z,d=o,sr1=left(x*o,2),sr2=right(y*z,2),r1=x*o-y*z),right(rednum,5))
         print("- - - = ------- = ------- = ---","= --    f({})".format(factor) if factor>1 else "")
         print("{c}   {d}    {c} x {d}       {r2}     {r2}".format(c=z,d=o,r2=left(z*o,2)),right(redden,5))
 
