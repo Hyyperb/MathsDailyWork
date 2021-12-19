@@ -1,7 +1,9 @@
 from random import randint as rnd
 
-#version 2.3
-#Whats new: check git repo
+#version 2.4
+#Whats new: 3 digit numbers can now generate in type1,2 but with lesser probability
+#           and enlarged the difference between those numbers
+#           quotient in type5 won't end with '.0'
 
 same_denominator_allowed = False# set condition weather same denominator can generate in type5
 
