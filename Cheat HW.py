@@ -22,6 +22,7 @@ def hcf(x,y):
     return(x)
 
 f,t = 10,100 # range to generate random numbers in type 1 and 2
+e = 1.12 #expomentation to type1,2 numbers 
 
 common = [[0 for _ in range(2)] for _ in range(5)]
 used = []
@@ -29,13 +30,13 @@ for i in range(5):
     x = rnd(f,t-20)
     y = rnd(x,t)
 
-    while x in used or x%10==0:
-        rn = rnd(f,t-20)
+    while x in used or x%10==0 or x%100==0:
+        rn = int(rnd(f,t-30)**e)
         x = rn
     used.extend([x,x+1,x-1])
         
-    while y in used or y%10==0 or y-x<10:
-        rn = rnd(x,t)
+    while y in used or y%10==0 or x%100==0 or y-x<10:
+        rn = int(rnd(x,t)**e)
         y = rn
     used.extend([y,y+1,y-1])
     
@@ -103,7 +104,8 @@ def type4(f1=100,t1=999,f2=3,t2=9):
     while x%100==0 or x%10==0:
         x = rnd(f1,t1)
     y = rnd(f2,t2)
-    print("{x} / {y} = {r}\nDIY".format(x=x,y=y,r=x/y))
+    r = x/y if not x%y == 0 else int(x/y)
+    print("{x} / {y} = {r}\nDIY".format(x=x,y=y,r=r))
 
 def type5(f=2,t=9):
     x = rnd(f,t)
