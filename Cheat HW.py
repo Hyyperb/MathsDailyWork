@@ -1,9 +1,7 @@
 from random import randint as rnd
-
-#version 2.4
-#Whats new: 3 digit numbers can now generate in type1,2 but with lesser probability
-#           and enlarged the difference between those numbers
-#           quotient in type5 won't end with '.0'
+from random import choices
+#version 2.5
+#Whats new: fixed rng in type 1,2
 
 same_denominator_allowed = False# set condition weather same denominator can generate in type5
 
@@ -23,8 +21,8 @@ def hcf(x,y):
         x,y = y,x%y
     return(x)
 
-f,t = 10,100 # range to generate random numbers in type 1 and 2
-e = 1.12 #expomentation to type1,2 numbers 
+def unequally_distributed_rng():
+    return random.choices(range(1000),range(0,1000,-1))[0]
 
 common = [[0 for _ in range(2)] for _ in range(5)]
 used = []
@@ -33,12 +31,12 @@ for i in range(5):
     y = rnd(x,t)
 
     while x in used or x%10==0 or x%100==0:
-        rn = int(rnd(f,t-30)**e)
+        rn = unequally_distributed_rng()
         x = rn
     used.extend([x,x+1,x-1])
         
     while y in used or y%10==0 or x%100==0 or y-x<10:
-        rn = int(rnd(x,t)**e)
+        rn = unequally_distributed_rng()
         y = rn
     used.extend([y,y+1,y-1])
     
