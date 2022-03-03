@@ -1,7 +1,12 @@
 from random import randint as rnd
 from random import choices
-#version 2.5.1
-#Whats new: fixed rng in type 1,2 AGAIN
+import datetime
+
+#version 2.5.2
+#Whats new: shows today's date
+
+now = datetime.datetime.now()
+print(now.strftime("%d/%m/%y"))
 
 same_denominator_allowed = False# set condition weather same denominator can generate in type5
 
