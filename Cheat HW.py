@@ -1,7 +1,7 @@
 from random import randint as rnd
 from random import choices
-#version 2.5
-#Whats new: fixed rng in type 1,2
+#version 2.5.1
+#Whats new: fixed rng in type 1,2 AGAIN
 
 same_denominator_allowed = False# set condition weather same denominator can generate in type5
 
@@ -22,7 +22,7 @@ def hcf(x,y):
     return(x)
 
 def unequally_distributed_rng():
-    return random.choices(range(1000),range(0,1000,-1))[0]
+    return random.choices(range(1000),range(1000,0,-1))[0]
 
 common = [[0 for _ in range(2)] for _ in range(5)]
 used = []
