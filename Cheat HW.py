@@ -1,5 +1,5 @@
 from random import randint as rnd
-from random import choices
+import random
 import datetime
 
 #version 2.5.2
@@ -31,6 +31,8 @@ def unequally_distributed_rng():
 
 common = [[0 for _ in range(2)] for _ in range(5)]
 used = []
+f = 10
+t = 100
 for i in range(5):
     x = rnd(f,t-20)
     y = rnd(x,t)
