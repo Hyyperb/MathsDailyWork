@@ -1,16 +1,34 @@
 from random import randint as rnd
-import math
 import random
 import datetime
 
-#version 2.0
-#Whats new: New name DWques (dew-kes, dukes, due-kwes)
-#           Rebuilt from DWgen 2.6 codebase
+#version 2.7 (yes skipped to 2.7)
+#   Added type 6
+#       (ax + b)² = a² + 2ab + b²
+#       (ax - b)² = a² - 2ab + b²
+#   Better type 1,2 number pair generation:
+#       Higher difference
+#       Always different unit digit
+#   Better symbols in type 5*:
+#       Replaced / with ÷ 
+#       Replaced x with × 
+#   Banned 5 as divisor in type4
+#   Shows day of week on the top
 
-now = datetime.datetime.now()
-print("today's date:",now.strftime("%d/%m/%y"))
+MUL = u'\u00D7'
+DIV = u'\u00F7'
+SQR = u'\u00B2'
 
 same_denominator_allowed = False    #set condition weather same denominator can generate in type5
+days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+]
 
 def ind(index, number):             #allows to subscript numbers. x[y] would be ind(y,x)
     return int(str(number)[index])
@@ -26,6 +44,18 @@ def left(s,margin=4):               #adds margin after text
 def unequally_distributed_rng():
     return random.choices(range(1000),range(1000,0,-1))[0]
 
+def same_unit_place(x,y):
+    if str(x)[-1] == str(y)[-1]:
+        return True
+    else:
+        return False
+
+def timestamp():
+    now = datetime.datetime.now()
+    date = now.strftime("%d/%m/%Y")
+    day = days[now.weekday()]
+    print(date, day)
+
 common = [[0 for _ in range(2)] for _ in range(5)]
 used = []
 f = 10
@@ -35,6 +65,7 @@ eleven_multiple_encountered = False
 for i in range(5):
     x = rnd(f,t-20)
     y = rnd(x,t)
+    diff = 16
 
     while x in used or x%10==0 or x%100==0 or (x%11==0 and eleven_multiple_encountered):
         rn = unequally_distributed_rng()
@@ -43,7 +74,7 @@ for i in range(5):
             eleven_multiple_encountered=True
     used.extend([x,x+1,x-1])
         
-    while y in used or y%10==0 or x%100==0 or y-x<10 or (x%11==0 and eleven_multiple_encountered):
+    while y in used or y%10==0 or x%100==0 or y-x<diff or (x%11==0 and eleven_multiple_encountered) or same_unit_place(x,y):
         rn = unequally_distributed_rng()
         y = rn
         if rn%11==0:
@@ -87,6 +118,8 @@ def type4(f1=100,t1=999,f2=3,t2=9):
     while x%100==0 or x%10==0:
         x = rnd(f1,t1)
     y = rnd(f2,t2)
+    while y==5:
+        y = rnd(f2,t2)
     print("{} / {}".format(x,y))
 
 def type5(f=2,t=9):
@@ -141,8 +174,14 @@ def type5(f=2,t=9):
     print("{c}   {d}".format(c=z,d=o))
 
 
+def type6():
+    a = rnd(1,20)
+    b = rnd(2,20)
+    print(f"({a}x + {b}){SQR}")
+    print(f"({a}x - {b}){SQR}")
+
 def main():
-    
+    timestamp()
     print("\n     ---type1---\n")
     type1()
     print("\n     ---type2---\n")
@@ -153,5 +192,8 @@ def main():
     type4()
     print("\n     ---type5---\n")
     type5()
+    print("\n    ---type6---\n")
+    type6()
+    print()
 
 main()

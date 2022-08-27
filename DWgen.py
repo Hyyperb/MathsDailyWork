@@ -1,22 +1,37 @@
 from random import randint as rnd
-import math
 import random
 import datetime
 
-#version 2.6
-#Whats new: new name DWgen (dew-gen)
-#           reduces multiplication and division answers in type 5
-#           stops answer in type4 after numbers repeating twice after decimal point
-#           type titles moved 1em right
-#           fixed addition symbol in type5/substraction
-#           multiples of 11 are limited to be choosed once in type 1,2
-#           added principles to readme file
-#           date is shown with format now
+#version 2.7
+#   Added type 6
+#       (ax + b)² = a² + 2ab + b²
+#       (ax - b)² = a² - 2ab + b²
+#   Better type 1,2 number pair generation:
+#       Higher difference
+#       Always different unit digit
+#   Better symbols in type 5*:
+#       Replaced / with ÷ 
+#       Replaced x with × 
+#   Banned 5 as a divisor in type4
+#   Shows day of week on the top
+#   Fixed factors representation
+#   Code optimization
+#   
 
-now = datetime.datetime.now()
-print("today's date:",now.strftime("%d/%m/%y"))
+MUL = u'\u00D7'
+DIV = u'\u00F7'
+SQR = u'\u00B2'
 
 same_denominator_allowed = False# set condition weather same denominator can generate in type5
+days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+]
 
 def ind(index, number):         #allows to subscript numbers. x[y] would be ind(y,x)
     return int(str(number)[index])
@@ -54,6 +69,18 @@ def terminator(num):            #stops repeating of decimals after being repeate
                 last_num = i
     return result
 
+def same_unit_place(x,y):
+    if str(x)[-1] == str(y)[-1]:
+        return True
+    else:
+        return False
+
+def timestamp():
+    now = datetime.datetime.now()
+    date = now.strftime("%d/%m/%Y")
+    day = days[now.weekday()]
+    print(date, day)
+
 
 common = [[0 for _ in range(2)] for _ in range(5)]
 used = []
@@ -62,8 +89,9 @@ t = 100
 eleven_multiple_encountered = False
 
 for i in range(5):
-    x = rnd(f,t-20)
+    x = rnd(f,t-30)
     y = rnd(x,t)
+    diff = 16
 
     while x in used or x%10==0 or x%100==0 or (x%11==0 and eleven_multiple_encountered):
         rn = unequally_distributed_rng()
@@ -72,7 +100,7 @@ for i in range(5):
             eleven_multiple_encountered=True
     used.extend([x,x+1,x-1])
         
-    while y in used or y%10==0 or x%100==0 or y-x<10 or (x%11==0 and eleven_multiple_encountered):
+    while y in used or y%10==0 or x%100==0 or y-x<diff or (x%11==0 and eleven_multiple_encountered) or same_unit_place(x,y):
         rn = unequally_distributed_rng()
         y = rn
         if rn%11==0:
@@ -143,6 +171,8 @@ def type4(f1=100,t1=999,f2=3,t2=9):
     while x%100==0 or x%10==0:
         x = rnd(f1,t1)
     y = rnd(f2,t2)
+    while y==5:
+        y = rnd(f2,t2)
     r = terminator(x/y) if not x%y == 0 else int(x/y)
     print("{x} / {y} = {r}\nDIY".format(x=x,y=y,r=r))
 
@@ -186,7 +216,7 @@ def type5(f=2,t=9):
             redden = str(int(den/factor))
 
         print("{a}   {b}   {a} + {b}   {r1}".format(a=x,b=y,r1=right(x+y,2)),right(rednum))
-        print("- + - = ----- = --","= --    f({})".format(factor) if factor>1 else "")
+        print("- + - = ----- = --","= --    f={}".format(factor) if factor>1 else "")
         print("{c}   {d}     {c}     {r2}".format(c=z,d=o,r2=right(z,2)),right(redden))
 
         print("\n")
@@ -215,7 +245,7 @@ def type5(f=2,t=9):
             redden=" "+str(int(den/factor))
 
         print("{a}   {b}   {a}x{d}+{c}x{b}   {sr1} + {sr2}   {r1}".format(a=x,b=y,c=z,d=o,sr1=left(x*o,2),sr2=right(y*z,2),r1=num),right(rednum,5))
-        print("- + - = ------- = ------- = ---","= --    f({})".format(factor) if factor>1 else "")
+        print("- + - = ------- = ------- = ---","= --    f={}".format(factor) if factor>1 else "")
         print("{c}   {d}    {c} x {d}       {r2}     {r2}".format(c=z,d=o,r2=left(den,2)),right(redden,5))
 
         print("\n")
@@ -228,7 +258,7 @@ def type5(f=2,t=9):
             redden=str(int(den/factor))
 
         print("{a}   {b}   {a}x{d}-{c}x{b}   {sr1} - {sr2}   {r1}".format(a=x,b=y,c=z,d=o,sr1=left(x*o,2),sr2=right(y*z,2),r1=x*o-y*z),right(rednum,5))
-        print("- - - = ------- = ------- = ---","= --    f({})".format(factor) if factor>1 else "")
+        print("- - - = ------- = ------- = ---","= --    f={}".format(factor) if factor>1 else "")
         print("{c}   {d}    {c} x {d}       {r2}     {r2}".format(c=z,d=o,r2=left(z*o,2)),right(redden,5))
 
     print("\n")
@@ -243,7 +273,7 @@ def type5(f=2,t=9):
         redden = str(int(den/factor))
 
     print("{a}   {b}   {a} x {b}   {r1}   {rn}".format(a=x,b=y,c=z,d=o,r1=x*y,rn=rednum))
-    print("- x - = ----- = -- {}   {}".format("= --" if factor>1 else "",("f={}".format(factor)) if factor>1 else ""))
+    print("- {} - = ----- = -- {}   {}".format(MUL,"= --" if factor>1 else "",("f={}".format(factor)) if factor>1 else ""))
     print("{c}   {d}   {c} x {d}   {r2}   {rd}".format(c=z,d=o,r2=z*o,rd=redden))
 
     print("\n")
@@ -258,12 +288,18 @@ def type5(f=2,t=9):
         rednum = str(int(num/factor))
 
     print("{a}   {b}   {a} x {d}   {r1}{rn}".format(a=x,b=y,d=o,r1=x*o,rn="   "+rednum))
-    print("- / - = ----- = -- {}   {}".format("= --" if factor>1 else "",("f={}".format(factor)) if factor>1 else ""))
+    print("- {} - = ----- = -- {}   {}".format(DIV,"= --" if factor>1 else "",("f={}".format(factor)) if factor>1 else ""))
     print("{c}   {d}   {c} x {b}   {r2}{rd}".format(c=z,d=o,b=y,r2=z*y,rd="   "+redden))
 
 
+def type6():
+    a = rnd(1,20)
+    b = rnd(2,20)
+    print(f"({a}x + {b}){SQR} = {a^2}x{SQR} + {2*a*b}x + {b^2}")
+    print(f"({a}x - {b}){SQR} = {a^2}x{SQR} - {2*a*b}x + {b^2}")
+
 def main():
-    
+    timestamp()
     print("\n     ---type1---\n")
     type1()
     print("\n     ---type2---\n")
@@ -274,5 +310,8 @@ def main():
     type4()
     print("\n     ---type5---\n")
     type5()
+    print("\n    ---type6---\n")
+    type6()
+    print()
 
 main()
