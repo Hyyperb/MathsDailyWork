@@ -7,7 +7,7 @@ Principles kept in mind while creating this:
 
 2) Optimization? no, we don't need it here
 
-3) Tried (my) best to keep code clean
+3) Tried (my) best to keep code clean (actually didn't)
 
 4) No copypasta from stackoverflow, keep it OC
 
