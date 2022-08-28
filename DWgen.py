@@ -16,7 +16,10 @@ import datetime
 #   Shows day of week on the top
 #   Fixed factors representation
 #   Code optimization
-#   
+#
+#version 2.7.1
+#   Critical bug fix
+#       used XOR instead of power operator in type 6
 
 MUL = u'\u00D7'
 DIV = u'\u00F7'
@@ -295,8 +298,8 @@ def type5(f=2,t=9):
 def type6():
     a = rnd(1,20)
     b = rnd(2,20)
-    print(f"({a}x + {b}){SQR} = {a^2}x{SQR} + {2*a*b}x + {b^2}")
-    print(f"({a}x - {b}){SQR} = {a^2}x{SQR} - {2*a*b}x + {b^2}")
+    print(f"({a}x + {b}){SQR} = {a**2}x{SQR} + {2*a*b}x + {b**2}")
+    print(f"({a}x - {b}){SQR} = {a**2}x{SQR} - {2*a*b}x + {b**2}")
 
 def main():
     timestamp()
