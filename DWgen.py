@@ -20,6 +20,9 @@ import datetime
 #version 2.7.1
 #   Critical bug fix
 #       used XOR instead of power operator in type 6
+#version 2.7.2
+#   multiple varibles will generate for type6
+
 
 MUL = u'\u00D7'
 DIV = u'\u00F7'
@@ -35,6 +38,7 @@ days = [
     "Saturday",
     "Sunday"
 ]
+variables = list("abcdlmnpqrsxyz")
 
 def ind(index, number):         #allows to subscript numbers. x[y] would be ind(y,x)
     return int(str(number)[index])
@@ -298,8 +302,9 @@ def type5(f=2,t=9):
 def type6():
     a = rnd(1,20)
     b = rnd(2,20)
-    print(f"({a}x + {b}){SQR} = {a**2}x{SQR} + {2*a*b}x + {b**2}")
-    print(f"({a}x - {b}){SQR} = {a**2}x{SQR} - {2*a*b}x + {b**2}")
+    x = random.choice(variables)
+    print(f"({a}{x} + {b}){SQR} = {a**2}{x}{SQR} + {2*a*b}{x} + {b**2}")
+    print(f"({a}{x} - {b}){SQR} = {a**2}{x}{SQR} - {2*a*b}{x} + {b**2}")
 
 def main():
     timestamp()
