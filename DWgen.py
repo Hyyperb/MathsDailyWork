@@ -16,12 +16,13 @@ import datetime
 #   Shows day of week on the top
 #   Fixed factors representation
 #   Code optimization
-#
 #version 2.7.1
 #   Critical bug fix
 #       used XOR instead of power operator in type 6
 #version 2.7.2
 #   multiple varibles will generate for type6
+#version 2.7.3
+#   added ... at end of non-terminating recurring answers in type4
 
 
 MUL = u'\u00D7'
@@ -71,6 +72,7 @@ def terminator(num):            #stops repeating of decimals after being repeate
             continue
         if has_crossed_point:
             if i == last_num:
+                result += "..."
                 break
             else:
                 last_num = i
@@ -180,8 +182,11 @@ def type4(f1=100,t1=999,f2=3,t2=9):
     y = rnd(f2,t2)
     while y==5:
         y = rnd(f2,t2)
-    r = terminator(x/y) if not x%y == 0 else int(x/y)
-    print("{x} / {y} = {r}\nDIY".format(x=x,y=y,r=r))
+    if not x%y == 0:
+        r = terminator(x/y)
+    else:
+        r = int(x/y)
+    print(f"{x} / {y} = {r}\nDIY")
 
 def type5(f=2,t=9):
     x = rnd(f,t)
@@ -322,4 +327,5 @@ def main():
     type6()
     print()
 
-main()
+#main()
+type4()
